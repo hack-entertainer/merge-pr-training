@@ -1,241 +1,124 @@
-# GitHub PR & Merge Training
+# GitHub PR Playground
 
-A practical training repo for learning how to orchestrate open-source collaboration using GitHub pull requests, forks, branches, reviews, and merges.
+A tiny playground for learning real open-source collaboration.
 
-This workflow simulates a real maintainer/contributor setup using two GitHub accounts and two browsers.
+This repo is intentionally simple.
+The goal is to practice the mechanics of contributing without process overhead.
 
-- Chrome account → maintainer
-- Firefox account → contributor
+You will learn:
 
-The goal is to build operational fluency with:
-
-- forks
-- branches
-- pull requests (PRs)
-- code review
-- merge conflicts
-- upstream syncing
-- collaborative iteration
+* forks
+* branches
+* commits
+* pull requests
+* merges
+* merge conflicts
+* syncing forks
 
 ---
 
-# Mental Model
+# Roles
 
-GitHub collaboration is fundamentally:
+Typical setup:
 
-```text
-base repository
-    ↓
-contributors create branches/forks
-    ↓
-contributors propose changes via PRs
-    ↓
-maintainers review and merge
+```text id="mrh8hf"
+maintainer → owns canonical repo
+contributors → fork + submit PRs
 ```
 
-A pull request is not “sending code.”
+You can simulate this with:
 
-It is:
-- a proposed merge
-- attached to discussion
-- attached to review
-- attached to a diff
-- attached to history
-
-This allows maintainers to stabilize systems over time while still permitting experimentation.
+* two GitHub accounts
+* two browsers
+* two local clones
 
 ---
 
-# Repository Roles
+# Basic Flow
 
-## Maintainer (Chrome account)
-
-Responsibilities:
-- owns canonical repository
-- reviews PRs
-- manages `main`
-- merges approved changes
-- coordinates contributors
-
-## Contributor (Firefox account)
-
-Responsibilities:
-- forks repository
-- creates feature branches
-- submits PRs
-- rebases/syncs fork
-- responds to review feedback
-
----
-
-# Training Exercises
-
----
-
-# Exercise 1 — Create the Base Repository
-
-Using the maintainer account:
-
-1. Create repository:
-   ```text
-   merge-pr-training
-   ```
-
-2. Add:
-   - `README.md`
-   - `.gitignore`
-
-3. Keep:
-   ```text
-   main
-   ```
-   as the default branch.
-
----
-
-# Exercise 2 — Fork Workflow
-
-Using the contributor account:
-
-1. Open maintainer repo
-2. Click:
-   ```text
-   Fork
-   ```
-
-3. Edit:
-   ```text
-   README.md
-   ```
-
-4. Add a small section:
-   ```md
-   ## Contributor Note
-   Training PR from contributor account.
-   ```
-
-5. Commit to:
-   ```text
-   firefox-readme-edit
-   ```
-
-6. Open a pull request.
-
----
-
-# Exercise 3 — Review & Merge
-
-Using the maintainer account:
-
-1. Open:
-   ```text
-   Pull Requests
-   ```
-
-2. Review:
-   - commits
-   - changed files
-   - diff
-
-3. Leave a comment.
-
-Example:
-
-```text
-Looks good. Please add one more line.
+```text id="vhxgl7"
+fork
+→ branch
+→ commit
+→ push
+→ PR
+→ review
+→ merge
 ```
 
-4. Contributor pushes another commit.
-
-5. Maintainer merges PR.
+That’s most of open source.
 
 ---
 
-# Exercise 4 — Local Git Workflow
+# Clone Your Fork
 
-Contributor local workflow:
+```zsh id="hfth6s"
+git clone git@github.com:YOUR_USER/REPO.git
+cd REPO
+```
 
-```zsh
-git clone git@github.com:YOUR_USER/merge-pr-training.git
+Add original repo as upstream:
 
-cd merge-pr-training
-
+```zsh id="5hgjje"
 git remote add upstream \
-git@github.com:MAINTAINER_USER/merge-pr-training.git
-
-git checkout -b feature/add-notes
-
-echo "Contributor note" >> README.md
-
-git add README.md
-
-git commit -m "Add contributor note"
-
-git push origin feature/add-notes
+git@github.com:ORIGINAL_OWNER/REPO.git
 ```
-
-Then open the PR on GitHub.
 
 ---
 
-# Exercise 5 — Syncing a Fork
+# Create a Branch
 
-Contributor sync workflow:
+```zsh id="7axtj6"
+git checkout -b feature/test-change
+```
 
-```zsh
+Make edits.
+
+---
+
+# Commit Changes
+
+```zsh id="gkkk3m"
+git add .
+git commit -m "Describe change"
+```
+
+---
+
+# Push Branch
+
+```zsh id="u4r4rx"
+git push origin feature/test-change
+```
+
+Then open a Pull Request on GitHub.
+
+---
+
+# Sync Your Fork
+
+```zsh id="d7x4lo"
 git checkout main
-
 git fetch upstream
-
 git merge upstream/main
-
 git push origin main
 ```
 
-This keeps the fork aligned with the canonical repository.
-
 ---
 
-# Exercise 6 — Merge Conflict Training
+# Merge Conflict Practice
 
-Purpose:
-Learn conflict resolution under competing edits.
+To practice conflict resolution:
 
-## Setup
+1. Two people edit the same line
+2. Merge one branch first
+3. Merge the second branch
 
-Maintainer:
-- edits a line in `README.md`
-- commits directly to `main`
+Git will complain.
 
-Contributor:
-- edits the same line
-- pushes PR
+Resolve manually:
 
-GitHub should now report:
-
-```text
-This branch has conflicts that must be resolved.
-```
-
----
-
-# Resolving Conflicts Locally
-
-Contributor:
-
-```zsh
-git fetch upstream
-
-git checkout feature/add-notes
-
-git merge upstream/main
-```
-
-Git will stop and mark conflicts.
-
-Open conflicted files and look for:
-
-```text
+```text id="7d7ocd"
 <<<<<<< HEAD
 your code
 =======
@@ -243,162 +126,36 @@ incoming code
 >>>>>>> upstream/main
 ```
 
-Manually choose the final version.
-
 Then:
 
-```zsh
-git add README.md
-
-git commit
-
-git push origin feature/add-notes
-```
-
-The PR updates automatically.
-
----
-
-# Core Git Commands
-
-## Status
-
-```zsh
-git status
-```
-
-## Create branch
-
-```zsh
-git checkout -b feature/my-change
-```
-
-## Stage files
-
-```zsh
+```zsh id="iv4g4d"
 git add .
+git commit
+git push
 ```
 
-## Commit
+---
 
-```zsh
-git commit -m "Describe change"
-```
+# Useful Commands
 
-## Push branch
-
-```zsh
-git push origin feature/my-change
-```
-
-## Pull latest
-
-```zsh
-git pull
-```
-
-## Fetch remotes
-
-```zsh
-git fetch --all
-```
-
-## View remotes
-
-```zsh
+```zsh id="t0d1rf"
+git status
+git branch
 git remote -v
+git log --oneline --graph
 ```
 
 ---
 
-# Recommended Branch Naming
+# Project Philosophy
 
-```text
-feature/add-auth
-feature/fix-navbar
-bugfix/mobile-layout
-docs/update-readme
-refactor/api-client
-```
+This is a playground.
 
-Keep names:
-- short
-- descriptive
-- stable
+Keep changes:
 
----
+* small
+* experimental
+* easy to review
+* easy to delete
 
-# Recommended PR Practices
-
-Good PRs are:
-- small
-- focused
-- reviewable
-- reversible
-
-Avoid:
-- giant unrelated changes
-- formatting noise
-- mixed concerns
-
-A PR should ideally answer:
-1. What changed?
-2. Why?
-3. What are the risks?
-4. How was it tested?
-
----
-
-# Suggested Repository Protections
-
-Later, as projects mature:
-
-Enable:
-- required PR review
-- CI checks
-- branch protection
-- squash merge rules
-- CODEOWNERS
-
-These increase coordination quality as project concreteness rises.
-
----
-
-# Operational Philosophy
-
-Early projects benefit from:
-- fast iteration
-- low ceremony
-- frequent merges
-
-As systems become more load-bearing:
-- review depth increases
-- migration planning matters more
-- compatibility matters more
-- change cost rises
-
-This repo exists to practice that transition deliberately.
-
----
-
-# Canonical Collaboration Loop
-
-```text
-fork
-  ↓
-branch
-  ↓
-commit
-  ↓
-push
-  ↓
-pull request
-  ↓
-review
-  ↓
-merge
-  ↓
-sync fork
-```
-
-Repeat until fluent.
+Learn by merging things.
